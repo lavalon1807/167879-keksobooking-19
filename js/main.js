@@ -169,12 +169,19 @@ var removeBlock = function () {
 
 /* Делаем метку в центре основоположником */
 var mainPin = document.querySelector('.map__pin--main');
-  mainPin.addEventListener('mousedown', function () {
-      active.classList.remove('map--faded');
-      removeBlock();
-    mainPin.addEventListener('mouseup', function () {
+
+mainPin.addEventListener('mousedown', function (evt) {
+  if (evt.button == 0) {
+    active.classList.remove('map--faded');
+    removeBlock();
+  }
+  console.log('Другая кнопка!');
+
+  mainPin.addEventListener('mouseup', function (evt) {
+    if (evt.button == 0) {
       active.classList.add('map--faded');
-      addBlock();
+    addBlock();
+    }
   });
 });
 

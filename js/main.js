@@ -1,7 +1,6 @@
 'use strict';
 
 var active = document.querySelector('.map');
-active.classList.remove('map--faded');
 
 var mapPins = document.querySelector('.map__pins');
 
@@ -153,13 +152,37 @@ var addPins = function () {
   mapPins.appendChild(fragment);
 };
 
-addPins();
+/* делаем для всех полей ввода атрибут disabled*/
+var formFields = document.querySelectorAll('fieldset');
+var addBlock = function () {
+  for (var i = 0; i < formFields.length; i++) {
+    formFields[i].setAttribute('disabled', 'true');
+  }
+}
+addBlock();
 
-var addCards = function () {
-  var fragment = document.createDocumentFragment();
-  fragment.appendChild(templeCard);
+var removeBlock = function () {
+  for (var i = 0; i < formFields.length; i++) {
+    formFields[i].removeAttribute('disabled', 'false');
+  }
+}
 
-  mapPins.appendChild(fragment);
-};
+/* Делаем метку в центре основоположником */
+var mainPin = document.querySelector('.map__pin--main');
+  mainPin.addEventListener('mousedown', function () {
+      active.classList.remove('map--faded');
+      removeBlock();
+    mainPin.addEventListener('mouseup', function () {
+      active.classList.add('map--faded');
+      addBlock();
+  });
+});
 
-addCards();
+// var addCards = function () {
+//   var fragment = document.createDocumentFragment();
+//   fragment.appendChild(templeCard);
+
+//   mapPins.appendChild(fragment);
+// };
+
+// addCards();

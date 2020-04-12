@@ -27,6 +27,9 @@ var PIN_MIN_X = 30;
 var PIN_MAX_X = 1100;
 var PIN_MIN_Y = 130;
 var PIN_MAX_Y = 630;
+var SIZE_MAIN_PIN_WIDTH = 66;
+var SIZE_MAIN_PIN_HEIGHT = 88;
+var SIZE_MAIN_SKY = 70;
 
 var TITLES = [
   'Уютное гнездышко для молодоженов',
@@ -88,6 +91,9 @@ var genKey = function (arr) {
   var key = arr2[rands]; /* записываем в переменную рандомный элемент массива */
   return key;
 };
+
+/* Добавляем скрытость сайта*/
+active.classList.add('map--faded');
 
 /* создание массива объектов случайных данных */
 var patronPin = [];
@@ -175,15 +181,120 @@ mainPin.addEventListener('mousedown', function (evt) {
     active.classList.remove('map--faded');
     removeBlock();
   }
-  console.log('Другая кнопка!');
 
-  mainPin.addEventListener('mouseup', function (evt) {
-    if (evt.button == 0) {
-      active.classList.add('map--faded');
-    addBlock();
+  // mainPin.addEventListener('mouseup', function (evt) {
+  //   if (evt.button == 0) {
+  //     active.classList.add('map--faded');
+  //   addBlock();
+  //   }
+  // });
+});
+
+mainPin.addEventListener('keydown', function (evt) {
+    if (evt.key == 'Enter') {
+      active.classList.remove('map--faded');
     }
   });
-});
+
+var adForm = document.querySelector('.ad-form');
+adForm.classList.add('ad-form--disabled');
+var mapFilters = document.querySelector('.map__filters');
+mapFilters.classList.add('map__filters--disabled');
+
+/* делаем обработчик перемещения*/
+
+var delta_x = 0;
+var delta_y = 0;
+  /* Ставим обработчики событий на нажатие и отпускание клавиши мыши */
+
+  /* При нажатии кнопки мыши попадаем в эту функцию */
+mainPin.onmousedown = function (evt) {
+  var address = document.querySelector('#address');
+  adForm.classList.remove('ad-form--disabled');
+  /* Получаем текущие координаты курсора */
+    var x = evt.pageX;
+    var y = evt.pageY;
+
+   // Узнаём текущие координаты блока
+  var x_block = mainPin.offsetLeft;
+  var y_block = mainPin.offsetTop;
+  /* Узнаём смещение */
+  delta_x = x_block - x;
+  delta_y = y_block - y;
+  /* Узнаем координаты, показанные концом метки*/
+  // address.value = 'x: ' + Math.floor(delta_x + SIZE_MAIN_PIN_WIDTH / 2) + ' y: ' + Math.floor(delta_y + SIZE_MAIN_PIN_HEIGHT);
+  address.value = 'x: ' + Math.floor(x_block + SIZE_MAIN_PIN_WIDTH / 2) + ' y: ' + Math.floor(y_block + SIZE_MAIN_PIN_HEIGHT - SIZE_MAIN_SKY);
+  document.onmousemove = function (evt) {
+    /* Получаем новые координаты курсора мыши */
+
+      var x = evt.pageX;
+      var y = evt.pageY;
+
+    /* Вычисляем новые координаты блока */
+    var new_x = delta_x + x;
+    var new_y = delta_y + y;
+    /* Ставим условия выхода за рамки метки*/
+    if (new_x < -33) {
+      new_x = -33;
+    } else if (new_x > 1167) {
+      new_x = 1167;
+    }
+    if (new_y < 112) {
+      new_y = 112;
+    } else if (new_y > 612) {
+      new_y = 612;
+    }
+    mainPin.style.top = new_y + "px";
+    mainPin.style.left = new_x + "px";
+    address.value = 'x: ' + Math.floor(new_x + SIZE_MAIN_PIN_WIDTH / 2) + ' y: ' + Math.floor(new_y + SIZE_MAIN_PIN_HEIGHT - SIZE_MAIN_SKY);
+  }
+};
+
+mainPin.onmouseup = function (evt) {
+  document.onmousemove = null; // При отпускании мыши убираем обработку события движения мыши
+};
+
+
+/* Делаем валидацию форм для гостей и комнат*/
+var room = document.querySelector('#room_number');
+var optionRoom = room.querySelectorAll('option');
+var sleepPlace = document.querySelector('#capacity');
+var optionPlace = sleepPlace.querySelectorAll('option');
+optionPlace[2].setAttribute('selected', false);
+
+room.addEventListener('change', function (evt) {
+  for (var i = 0; i < optionRoom.length; i++) {
+    optionPlace[i].classList.add('hidden');
+    if (optionRoom[i].selected === true) {
+      optionPlace[i].classList.remove('hidden');
+      optionPlace[i].setAttribute('selected', true);
+      sleepPlace.value = room.value;
+    }
+  }
+})
+
+// for (var i = 0; i < 4; i++) {
+//   var optionRoom = room.querySelectorAll('option')[i];
+// }
+
+// optionRoom.addEventListener('click', function (item) {
+//   setClassHidden(optionRoom.length);
+// })
+
+// function setClassHidden(count) {
+//   for (var i = 0; i < count; i++) {
+//     room.querySelectorAll('option')[i].classList.add('hidden');
+//     if (room.querySelectorAll('option')[i].selected === true) {
+//       room.querySelectorAll('option')[i].classList.remove('hidden');
+//     }
+//   }
+// }
+
+
+
+  // if (optionRoom.value = 1) {
+  //   sleepPlace.value = 1;
+  // }
 
 // var addCards = function () {
 //   var fragment = document.createDocumentFragment();

@@ -408,14 +408,6 @@ var addCards = function () {
     mapPins.appendChild(fragment);
 };
 /* Делаем валидацию */
-var formButton = document.querySelector('.ad-form__submit');
-var labelTitle = document.querySelector('.ad-form__label');
-adForm.onsubmit = function (evt) {
-  evt.preventDefault();
-  if (titleForm.value == '') {
-    console.log('Заголовок объявления не заполнен!');
-  }
-}
 
 /* Делаем валидацию форм для гостей и комнат*/
 var room = document.querySelector('#room_number');
@@ -436,13 +428,35 @@ room.addEventListener('change', function (evt) {
 });
 
 /* Делаем валидацию на Заголовок объявления */
-var titleForm = document.querySelector('#title');
-formButton.addEventListener('invalid', function (evt) {
+var titleForm = adForm.querySelector('#title');
+
+titleForm.addEventListener('invalid', function (evt) {
   if (titleForm.validity.tooShort) {
-    titleForm.setCustomValidity('Имя должно состоять минимум из 2-х символов');
+    titleForm.setCustomValidity('Имя должно состоять минимум из 30-ти символов!');
   } else if (titleForm.validity.tooLong) {
-    titleForm.setCustomValidity('Имя не должно превышать 25-ти символов');
+        titleForm.setCustomValidity('Имя должно состоять максимум 100 символов!');
+  } else if (titleForm.validity.valueMissing) {
+    titleForm.setCustomValidity('Обязательное поле!')
   } else {
-    titleForm.setCustomValidity('Заполните плизз');
+    titleForm.setCustomValidity('');
+  }
+});
+
+/* Делаем валидацию на цена и место*/
+var priceForm = adForm.querySelector('#price');
+var typeForm = adForm.querySelector('#type');
+var optionType = typeForm.querySelectorAll('option');
+var minPrice = [
+  '0',
+  '1000',
+  '5000',
+  '10000'
+];
+
+typeForm.addEventListener('change', function (evt) {
+  for (var i = 0; i < optionType.length; i++) {
+    if (optionType[i].selected == true) {
+      priceForm.setAttribute('min', minPrice[i]);
+    }
   }
 });

@@ -83,7 +83,16 @@ var checkins = ['13:00', '15:00', '17:00', '18:00', '24:00', '22:00', '21:00', '
 var checkouts = ['12:00', '13:00', '14:00', '15:00', '16:00', '18:00', '11:00', '9:00'];
 
 var features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner', 'wifi', 'dishwasher'];
-
+var avatarPins = [
+  'img/avatars/user01.png',
+  'img/avatars/user02.png',
+  'img/avatars/user03.png',
+  'img/avatars/user04.png',
+  'img/avatars/user05.png',
+  'img/avatars/user06.png',
+  'img/avatars/user07.png',
+  'img/avatars/user08.png'
+];
 /* генерирует случайное число */
 var genNumber = function (min, max) {
   var rend = Math.floor(Math.random() * (max - min) + min);
@@ -161,15 +170,30 @@ var addPins = function () {
   mapPins.appendChild(fragment);
   var buttonPins = mapPins.querySelectorAll('button[type="button"]');
   for (var i = 0; i < 8; i++) {
-    buttonPins[i].classList.add('ggg' + i);
+    buttonPins[i].classList.add('ggg_' + i);
+    buttonPins[i].classList.add('ggg');
   }
 
+  /* Адаптируем верстку */
+
+  var allPinsggg = document.querySelectorAll('.ggg');
+  allPinsggg.forEach(function (item) {
+    item.addEventListener('click', function () {
+      addCards();
+      templeCard.classList.remove('hidden');
+      var index = item.classList[1].split('_')[1];
+      cardTitle.innerText = patronPin[index].offer.title;
+      cardAvatar.src = patronPin[index - 1].author.avatar;
+    });
+  });
+  /* -------------------- */
+/*
   var ttt = document.querySelector('.ggg0');
   ttt.addEventListener('click', function () {
-    addCards();
-    templeCard.classList.remove('hidden');
+    // addCards();
+    // templeCard.classList.remove('hidden');
     cardAvatar.src = 'img/avatars/user08.png';
-    cardTitle.innerText = patronPin[0].offer.title;
+    // cardTitle.innerText = patronPin[0].offer.title;
     cardAdress.innerText = patronPin[0].offer.address;
     cardPrice.innerText = patronPin[0].offer.price + '₽/ночь';
     cardType.innerText = patronPin[0].offer.type;
@@ -180,10 +204,10 @@ var addPins = function () {
   });
   var ttt1 = document.querySelector('.ggg1');
   ttt1.addEventListener('click', function () {
-    addCards();
-    templeCard.classList.remove('hidden');
+    // addCards();
+    // templeCard.classList.remove('hidden');
     cardAvatar.src = 'img/avatars/user01.png';
-    cardTitle.innerText = patronPin[1].offer.title;
+    // cardTitle.innerText = patronPin[1].offer.title;
     cardAdress.innerText = patronPin[1].offer.address;
     cardPrice.innerText = patronPin[1].offer.price + '₽/ночь';
     cardType.innerText = patronPin[1].offer.type;
@@ -194,10 +218,10 @@ var addPins = function () {
   });
   var ttt2 = document.querySelector('.ggg2');
   ttt2.addEventListener('click', function () {
-    addCards();
-    templeCard.classList.remove('hidden');
+    // addCards();
+    // templeCard.classList.remove('hidden');
     cardAvatar.src = 'img/avatars/user02.png';
-    cardTitle.innerText = patronPin[2].offer.title;
+    // cardTitle.innerText = patronPin[2].offer.title;
     cardAdress.innerText = patronPin[2].offer.address;
     cardPrice.innerText = patronPin[2].offer.price + '₽/ночь';
     cardType.innerText = patronPin[2].offer.type;
@@ -208,10 +232,10 @@ var addPins = function () {
   });
   var ttt3 = document.querySelector('.ggg3');
   ttt3.addEventListener('click', function () {
-    addCards();
-    templeCard.classList.remove('hidden');
+    // addCards();
+    // templeCard.classList.remove('hidden');
     cardAvatar.src = 'img/avatars/user03.png';
-    cardTitle.innerText = patronPin[3].offer.title;
+    // cardTitle.innerText = patronPin[3].offer.title;
     cardAdress.innerText = patronPin[3].offer.address;
     cardPrice.innerText = patronPin[3].offer.price + '₽/ночь';
     cardType.innerText = patronPin[3].offer.type;
@@ -222,10 +246,10 @@ var addPins = function () {
   });
   var ttt4 = document.querySelector('.ggg4');
   ttt4.addEventListener('click', function () {
-    addCards();
-    templeCard.classList.remove('hidden');
+    // addCards();
+    // templeCard.classList.remove('hidden');
     cardAvatar.src = 'img/avatars/user04.png';
-    cardTitle.innerText = patronPin[4].offer.title;
+    // cardTitle.innerText = patronPin[4].offer.title;
     cardAdress.innerText = patronPin[4].offer.address;
     cardPrice.innerText = patronPin[4].offer.price + '₽/ночь';
     cardType.innerText = patronPin[4].offer.type;
@@ -236,10 +260,10 @@ var addPins = function () {
   });
   var ttt5 = document.querySelector('.ggg5');
   ttt5.addEventListener('click', function () {
-    addCards();
-    templeCard.classList.remove('hidden');
+    // addCards();
+    // templeCard.classList.remove('hidden');
     cardAvatar.src = 'img/avatars/user05.png';
-    cardTitle.innerText = patronPin[5].offer.title;
+    // cardTitle.innerText = patronPin[5].offer.title;
     cardAdress.innerText = patronPin[5].offer.address;
     cardPrice.innerText = patronPin[5].offer.price + '₽/ночь';
     cardType.innerText = patronPin[5].offer.type;
@@ -250,10 +274,10 @@ var addPins = function () {
   });
   var ttt6 = document.querySelector('.ggg6');
   ttt6.addEventListener('click', function () {
-    addCards();
-    templeCard.classList.remove('hidden');
+    // addCards();
+    // templeCard.classList.remove('hidden');
     cardAvatar.src = 'img/avatars/user06.png';
-    cardTitle.innerText = patronPin[6].offer.title;
+    // cardTitle.innerText = patronPin[6].offer.title;
     cardAdress.innerText = patronPin[6].offer.address;
     cardPrice.innerText = patronPin[6].offer.price + '₽/ночь';
     cardType.innerText = patronPin[6].offer.type;
@@ -265,10 +289,10 @@ var addPins = function () {
 
   var ttt7 = document.querySelector('.ggg7');
   ttt7.addEventListener('click', function () {
-    addCards();
-    templeCard.classList.remove('hidden');
+    // addCards();
+    // templeCard.classList.remove('hidden');
     cardAvatar.src = 'img/avatars/user07.png';
-    cardTitle.innerText = patronPin[7].offer.title;
+    // cardTitle.innerText = patronPin[7].offer.title;
     cardAdress.innerText = patronPin[7].offer.address;
     cardPrice.innerText = patronPin[7].offer.price + '₽/ночь';
     cardType.innerText = patronPin[7].offer.type;
@@ -276,7 +300,7 @@ var addPins = function () {
     cardTime.innerText = 'Заезд после ' + patronPin[7].offer.checkin + ' выезд до ' + patronPin[7].offer.checkout;
     var itemFeature = templeCard.querySelector('.popup__feature--' + patronPin[7].offer.feature);
     cardFeatures.removeChild(itemFeature);
-  });
+  });*/
 };
 
 

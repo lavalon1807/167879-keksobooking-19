@@ -99,20 +99,12 @@ var genNumber = function (min, max) {
   return rend;
 };
 
-// var genKey = function (arr) {
-//   var arr2 = Object.keys(arr);/* возвращаем массив из собственных свойств */
-//   var rands = genNumber(0, arr2.length - 1);/* создаем рандом из массива выше */
-//   var key = arr2[rands]; /* записываем в переменную рандомный элемент массива */
-//   return key;
-// };
-
 /* Добавляем скрытость сайта*/
 active.classList.add('map--faded');
 
 /* создание массива объектов случайных данных */
 var patronPin = [];
 var genPin = function () {
-  // var keys = genKey(anObj); /* вызываем функцию с рандомным элементом из массива и сохраняем в переменную*/
   for (var i = 0; i < 8; i++) {
     var objPin = {
       author: {
@@ -137,26 +129,16 @@ var genPin = function () {
 };
 
 var pins = genPin();
-// var genTitle = function () {
-//   var random = genNumber(0, 8);
-//   var itemFeature = templeCard.querySelector('.popup__feature--' + patronPin[random].offer.feature);
-//
-
-//   cardFeatures.
-//   cardAdress.innerText = patronPin[random].offer.address;
-//   cardPrice.innerText = patronPin[random].offer.price + '₽/ночь';
-//   cardType.innerText = patronPin[random].offer.type; /* вставляем в разметку рандомный текст*/
-//   cardCapacity.innerText = patronPin[random].offer.rooms + ' комнаты для ' + patronPin[random].offer.guest + ' гостей';/* Показывает рандом гостей и комнат*/
-//   cardTime.innerText = 'Заезд после ' + patronPin[random].offer.checkin + ' выезд до ' + patronPin[random].offer.checkout;
-// };
 
 /* генерация меток */
-var renderPin = function (data) {
+var renderPin = function (data, index) {
   var copyPin = templePin.cloneNode(true);
+  copyPin.classList.add('ggg');
+  copyPin.classList.add('ggg_' + (index + 1));
   copyPin.style = 'left: ' + genNumber(PIN_MIN_X, PIN_MAX_X) + 'px; top: ' + genNumber(PIN_MIN_Y, PIN_MAX_Y) + 'px';
-  picture.src = data.author.avatar;
-  picture.alt = data.offer.title;
-
+  var imgPin = copyPin.querySelector('img');
+  imgPin.src = data.author.avatar;
+  imgPin.alt = data.offer.title;
   return copyPin;
 };
 
@@ -165,142 +147,28 @@ var renderPin = function (data) {
 var addPins = function () {
   var fragment = document.createDocumentFragment();
   for (var j = 0; j < pins.length; j++) {
-    fragment.appendChild(renderPin(pins[j]));
+    fragment.appendChild(renderPin(pins[j], j));
   }
   mapPins.appendChild(fragment);
-  var buttonPins = mapPins.querySelectorAll('button[type="button"]');
-  for (var i = 0; i < 8; i++) {
-    buttonPins[i].classList.add('ggg_' + i);
-    buttonPins[i].classList.add('ggg');
-  }
 
   /* Адаптируем верстку */
 
   var allPinsggg = document.querySelectorAll('.ggg');
+
   allPinsggg.forEach(function (item) {
     item.addEventListener('click', function () {
       addCards();
       templeCard.classList.remove('hidden');
-      var index = item.classList[1].split('_')[1];
-      cardTitle.innerText = patronPin[index].offer.title;
+      var index = item.classList[2].split('_')[1];
       cardAvatar.src = patronPin[index - 1].author.avatar;
+      cardTitle.innerText = patronPin[index - 1].offer.title;
+      cardAdress.innerText = patronPin[index - 1].offer.address;
+      cardPrice.innerText = patronPin[index - 1].offer.price + '₽/ночь';
+      cardType.innerText = patronPin[index - 1].offer.type;
+      cardCapacity.innerText = patronPin[index - 1].offer.rooms + ' комнаты для ' + patronPin[index - 1].offer.guest + ' гостей';
+      cardTime.innerText = 'Заезд после ' + patronPin[index - 1].offer.checkin + ' выезд до ' + patronPin[index - 1].offer.checkout;
     });
   });
-  /* -------------------- */
-/*
-  var ttt = document.querySelector('.ggg0');
-  ttt.addEventListener('click', function () {
-    // addCards();
-    // templeCard.classList.remove('hidden');
-    cardAvatar.src = 'img/avatars/user08.png';
-    // cardTitle.innerText = patronPin[0].offer.title;
-    cardAdress.innerText = patronPin[0].offer.address;
-    cardPrice.innerText = patronPin[0].offer.price + '₽/ночь';
-    cardType.innerText = patronPin[0].offer.type;
-    cardCapacity.innerText = patronPin[0].offer.rooms + ' комнаты для ' + patronPin[0].offer.guest + ' гостей';
-    cardTime.innerText = 'Заезд после ' + patronPin[0].offer.checkin + ' выезд до ' + patronPin[0].offer.checkout;
-    var itemFeature = templeCard.querySelector('.popup__feature--' + patronPin[0].offer.feature);
-    cardFeatures.removeChild(itemFeature);
-  });
-  var ttt1 = document.querySelector('.ggg1');
-  ttt1.addEventListener('click', function () {
-    // addCards();
-    // templeCard.classList.remove('hidden');
-    cardAvatar.src = 'img/avatars/user01.png';
-    // cardTitle.innerText = patronPin[1].offer.title;
-    cardAdress.innerText = patronPin[1].offer.address;
-    cardPrice.innerText = patronPin[1].offer.price + '₽/ночь';
-    cardType.innerText = patronPin[1].offer.type;
-    cardCapacity.innerText = patronPin[1].offer.rooms + ' комнаты для ' + patronPin[1].offer.guest + ' гостей';
-    cardTime.innerText = 'Заезд после ' + patronPin[1].offer.checkin + ' выезд до ' + patronPin[1].offer.checkout;
-    var itemFeature = templeCard.querySelector('.popup__feature--' + patronPin[1].offer.feature);
-    cardFeatures.removeChild(itemFeature);
-  });
-  var ttt2 = document.querySelector('.ggg2');
-  ttt2.addEventListener('click', function () {
-    // addCards();
-    // templeCard.classList.remove('hidden');
-    cardAvatar.src = 'img/avatars/user02.png';
-    // cardTitle.innerText = patronPin[2].offer.title;
-    cardAdress.innerText = patronPin[2].offer.address;
-    cardPrice.innerText = patronPin[2].offer.price + '₽/ночь';
-    cardType.innerText = patronPin[2].offer.type;
-    cardCapacity.innerText = patronPin[2].offer.rooms + ' комнаты для ' + patronPin[2].offer.guest + ' гостей';
-    cardTime.innerText = 'Заезд после ' + patronPin[2].offer.checkin + ' выезд до ' + patronPin[2].offer.checkout;
-    var itemFeature = templeCard.querySelector('.popup__feature--' + patronPin[0].offer.feature);
-    cardFeatures.appendChild(itemFeature);
-  });
-  var ttt3 = document.querySelector('.ggg3');
-  ttt3.addEventListener('click', function () {
-    // addCards();
-    // templeCard.classList.remove('hidden');
-    cardAvatar.src = 'img/avatars/user03.png';
-    // cardTitle.innerText = patronPin[3].offer.title;
-    cardAdress.innerText = patronPin[3].offer.address;
-    cardPrice.innerText = patronPin[3].offer.price + '₽/ночь';
-    cardType.innerText = patronPin[3].offer.type;
-    cardCapacity.innerText = patronPin[3].offer.rooms + ' комнаты для ' + patronPin[3].offer.guest + ' гостей';
-    cardTime.innerText = 'Заезд после ' + patronPin[3].offer.checkin + ' выезд до ' + patronPin[3].offer.checkout;
-    var itemFeature = templeCard.querySelector('.popup__feature--' + patronPin[1].offer.feature);
-    cardFeatures.appendChild('before', itemFeature);
-  });
-  var ttt4 = document.querySelector('.ggg4');
-  ttt4.addEventListener('click', function () {
-    // addCards();
-    // templeCard.classList.remove('hidden');
-    cardAvatar.src = 'img/avatars/user04.png';
-    // cardTitle.innerText = patronPin[4].offer.title;
-    cardAdress.innerText = patronPin[4].offer.address;
-    cardPrice.innerText = patronPin[4].offer.price + '₽/ночь';
-    cardType.innerText = patronPin[4].offer.type;
-    cardCapacity.innerText = patronPin[4].offer.rooms + ' комнаты для ' + patronPin[4].offer.guest + ' гостей';
-    cardTime.innerText = 'Заезд после ' + patronPin[4].offer.checkin + ' выезд до ' + patronPin[4].offer.checkout;
-    var itemFeature = templeCard.querySelector('.popup__feature--' + patronPin[3].offer.feature);
-    cardFeatures.appendChild(itemFeature);
-  });
-  var ttt5 = document.querySelector('.ggg5');
-  ttt5.addEventListener('click', function () {
-    // addCards();
-    // templeCard.classList.remove('hidden');
-    cardAvatar.src = 'img/avatars/user05.png';
-    // cardTitle.innerText = patronPin[5].offer.title;
-    cardAdress.innerText = patronPin[5].offer.address;
-    cardPrice.innerText = patronPin[5].offer.price + '₽/ночь';
-    cardType.innerText = patronPin[5].offer.type;
-    cardCapacity.innerText = patronPin[5].offer.rooms + ' комнаты для ' + patronPin[5].offer.guest + ' гостей';
-    cardTime.innerText = 'Заезд после ' + patronPin[5].offer.checkin + ' выезд до ' + patronPin[5].offer.checkout;
-    var itemFeature = templeCard.querySelector('.popup__feature--' + patronPin[3].offer.feature);
-    cardFeatures.removeChild(itemFeature);
-  });
-  var ttt6 = document.querySelector('.ggg6');
-  ttt6.addEventListener('click', function () {
-    // addCards();
-    // templeCard.classList.remove('hidden');
-    cardAvatar.src = 'img/avatars/user06.png';
-    // cardTitle.innerText = patronPin[6].offer.title;
-    cardAdress.innerText = patronPin[6].offer.address;
-    cardPrice.innerText = patronPin[6].offer.price + '₽/ночь';
-    cardType.innerText = patronPin[6].offer.type;
-    cardCapacity.innerText = patronPin[6].offer.rooms + ' комнаты для ' + patronPin[6].offer.guest + ' гостей';
-    cardTime.innerText = 'Заезд после ' + patronPin[6].offer.checkin + ' выезд до ' + patronPin[6].offer.checkout;
-    var itemFeature = templeCard.querySelector('.popup__feature--' + patronPin[6].offer.feature);
-    cardFeatures.addChild(itemFeature);
-  });
-
-  var ttt7 = document.querySelector('.ggg7');
-  ttt7.addEventListener('click', function () {
-    // addCards();
-    // templeCard.classList.remove('hidden');
-    cardAvatar.src = 'img/avatars/user07.png';
-    // cardTitle.innerText = patronPin[7].offer.title;
-    cardAdress.innerText = patronPin[7].offer.address;
-    cardPrice.innerText = patronPin[7].offer.price + '₽/ночь';
-    cardType.innerText = patronPin[7].offer.type;
-    cardCapacity.innerText = patronPin[7].offer.rooms + ' комнаты для ' + patronPin[7].offer.guest + ' гостей';
-    cardTime.innerText = 'Заезд после ' + patronPin[7].offer.checkin + ' выезд до ' + patronPin[7].offer.checkout;
-    var itemFeature = templeCard.querySelector('.popup__feature--' + patronPin[7].offer.feature);
-    cardFeatures.removeChild(itemFeature);
-  });*/
 };
 
 

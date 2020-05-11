@@ -4,10 +4,6 @@ window.utilit = (function () {
   // var ENTER_KEY = 'Enter';
   /* генерирует случайное число */
   return {
-    genNumber: function (min, max) {
-      var rend = Math.floor(Math.random() * (max - min) + min);
-      return rend;
-    },
     isEscEvent: function (evt, action) {
       if (evt.key === 'ESC_KEY') {
         action();

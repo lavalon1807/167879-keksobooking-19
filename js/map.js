@@ -1,5 +1,6 @@
 'use strict';
 (function () {
+
   var mapFilters = document.querySelector('.map__filters');
   /* Добавляем скрытость сайта*/
   window.element.active.classList.add('map--faded');

@@ -10,14 +10,30 @@
   var cardPrice = window.templeCard.querySelector('.popup__text--price');
   var cardType = window.templeCard.querySelector('.popup__type');
   var cardCapacity = window.templeCard.querySelector('.popup__text--capacity');
-  var cardTime = window.templeCard.querySelector('.popup__text--time');
   var cardClose = window.templeCard.querySelector('.popup__close');
+  var cardFeatures = window.templeCard.querySelectorAll('.popup__feature');
+  var listFeatures = window.templeCard.querySelector('.popup__features');
+
+  window.delFeature =  function () {
+    listFeatures.innerHTML = '';
+  };
+
+  window.addFeature = function (features) {
+    for (var i = 0; i < features.length; i++) {
+      var creatFeature = document.createElement('li');
+
+      creatFeature.classList.add('popup__feature');
+      creatFeature.classList.add('popup__feature--' + features[i]);
+      listFeatures.appendChild(creatFeature);
+    }
+  }
 
   /* создание массива объектов случайных данных */
-  var patronPin = [];
+  window.patronPin = [];
   window.genPin = function () {
     for (var i = 0; i < 8; i++) {
       var objPin = {
+        id: i,
         author: {
           avatar: 'img/avatars/user0' + (i + 1) + '.png'
         },
@@ -30,13 +46,15 @@
           guest: window.constants.GUEST[i],
           checkin: window.constants.CHECKINS[i],
           checkout: window.constants.CHECKOUTS[i],
-          feature: window.constants.FEATURES[i],
+          pinX: window.constants.PIN_X[i],
+          pinY: window.constants.PIN_Y[i],
+          feature: window.constants.FEATURES[i]
         }
       };
-      patronPin.push(objPin);
+      window.patronPin.push(objPin);
 
     }
-    return patronPin;
+    return window.patronPin;
   };
 
   /* Создаем карточки */
@@ -46,23 +64,43 @@
     window.element.mapPins.appendChild(fragment);
   };
 
-  /* Добавляет карту при нажатии */
+  var getCardForPin = function (pin) {
+    var index = pin.classList[2].split('_')[1];
+    cardAvatar.src = window.patronPin[index - 1].author.avatar;
+    cardTitle.innerText = window.patronPin[index - 1].offer.title;
+    cardAdress.innerText = window.patronPin[index - 1].offer.address;
+    cardPrice.innerText = window.patronPin[index - 1].offer.price + '₽/ночь';
+    cardType.innerText = window.patronPin[index - 1].offer.type;
+    cardCapacity.innerText = window.patronPin[index - 1].offer.rooms + ' комнаты для ' + window.patronPin[index - 1].offer.guest + ' гостей';
+    window.delFeature();
+    addFeature(window.patronPin[index - 1].offer.feature);
 
+    // for (var i = 0; i < cardFeatures.length; i++) {
+    //   if (window.patronPin[index - 1].offer.type === 'Квартира') {
+    //     if (cardFeatures[i] === cardFeatures[0] || cardFeatures[i] === cardFeatures[3] || cardFeatures[i] === cardFeatures[5]) {
+    //       cardFeatures[i].style.display = 'inline-block';
+    //     } else {cardFeatures[i].style.display = 'none'}
+    //   } else if (window.patronPin[index - 1].offer.type === 'Дом' || window.patronPin[index - 1].offer.type === 'Бунгало') {
+    //     if (cardFeatures[i] === cardFeatures[0] || cardFeatures[i] === cardFeatures[3] || cardFeatures[i] === cardFeatures[5] || cardFeatures[i] === cardFeatures[4]) {
+    //       cardFeatures[i].style.display = 'inline-block';
+    //     } else {cardFeatures[i].style.display = 'none'}
+    //   } else if (window.patronPin[index - 1].offer.type === 'Дворец') {
+    //     if (cardFeatures[i]) {
+    //       cardFeatures[i].style.display = 'inline-block';
+    //     } else {cardFeatures[i].style.display = 'none'}
+    //   }
+    // }
+
+  };
+
+  /* Добавляет карту при нажатии */
   window.genCards = function () {
     var allPin = document.querySelectorAll('.cards');
-
     allPin.forEach(function (item) {
       item.addEventListener('click', function () {
         addCards();
         window.templeCard.classList.remove('hidden');
-        var index = item.classList[2].split('_')[1];
-        cardAvatar.src = patronPin[index - 1].author.avatar;
-        cardTitle.innerText = patronPin[index - 1].offer.title;
-        cardAdress.innerText = patronPin[index - 1].offer.address;
-        cardPrice.innerText = patronPin[index - 1].offer.price + '₽/ночь';
-        cardType.innerText = patronPin[index - 1].offer.type;
-        cardCapacity.innerText = patronPin[index - 1].offer.rooms + ' комнаты для ' + patronPin[index - 1].offer.guest + ' гостей';
-        cardTime.innerText = 'Заезд после ' + patronPin[index - 1].offer.checkin + ' выезд до ' + patronPin[index - 1].offer.checkout;
+        getCardForPin(item);
       });
     });
   };

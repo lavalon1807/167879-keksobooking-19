@@ -26,38 +26,47 @@
     PRICE: [
       '1200',
       '2200',
-      '3200',
-      '4200',
+      '47000',
+      '144200',
       '5200',
-      '6200',
-      '7200',
-      '8200'
+      '26200',
+      '57200',
+      '10200'
     ],
 
     ANOBJ: [
       'Квартира',
-      'Бунгало',
+      'Квартира',
       'Дом',
       'Дворец',
       'Квартира',
       'Бунгало',
       'Дом',
-      'Дворец'
+      'Квартира'
     ],
 
-    ROOM: [1, 2, 3, 4, 5, 6, 20, 50],
-    GUEST: [1, 2, 3, 4, 5, 6, 30, 100],
+    ROOM: [1, 2, 10, 100, 3, 6, 20, 5],
+    GUEST: [1, 2, 15, 0, 3, 6, 30, 5],
 
     CHECKINS: ['13:00', '15:00', '17:00', '18:00', '24:00', '22:00', '21:00', '10:00'],
     CHECKOUTS: ['12:00', '13:00', '14:00', '15:00', '16:00', '18:00', '11:00', '9:00'],
 
-    FEATURES: ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner', 'wifi', 'dishwasher'],
+    FEATURES:[
+      ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'],
+      ['wifi', 'dishwasher', 'parking', 'washer', 'elevator'],
+      ['wifi', 'dishwasher', 'parking', 'washer'],
+      ['wifi', 'dishwasher', 'parking'],
+      ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'],
+      ['wifi', 'dishwasher', 'parking', 'washer', 'elevator'],
+      ['wifi', 'dishwasher', 'parking', 'washer'],
+      ['wifi', 'dishwasher', 'parking', 'washer', 'elevator'],
+    ],
+
+
     MINPRICE: ['0', '1000', '5000', '10000'],
 
-    PIN_MIN_X: 30,
-    PIN_MAX_X: 1100,
-    PIN_MIN_Y: 130,
-    PIN_MAX_Y: 630,
+    PIN_X: [1100, 945, 101, 40, 301, 454, 666, 784],
+    PIN_Y: [630, 170, 310, 455, 501, 499, 200, 389],
     SIZE_MAIN_PIN_WIDTH: 66,
     SIZE_MAIN_PIN_HEIGHT: 88,
     SIZE_MAIN_SKY: 70

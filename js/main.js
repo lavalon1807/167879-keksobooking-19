@@ -211,9 +211,6 @@ adForm.classList.add('ad-form--disabled');
 var mapFilters = document.querySelector('.map__filters');
 mapFilters.classList.add('map__filters--disabled');
 
-/* делаем обработчик перемещения*/
-var deltaX = 0;
-var deltaY = 0;
 /* Ставим обработчики событий на нажатие и отпускание клавиши мыши */
 mainPin.onclick = function () {
   addPins();
@@ -225,46 +222,68 @@ mainPin.onmousedown = function (evt) {
   adForm.classList.remove('ad-form--disabled');
   templeCard.classList.add('hidden');
   /* Получаем текущие координаты курсора */
-  var axisX = evt.pageX;
-  var axisY = evt.pageY;
+  var axis = {
+    x: evt.clientX,
+    y: evt.clientY
+  };
 
   // Узнаём текущие координаты блока
-  var Xblock = mainPin.offsetLeft;
-  var Yblock = mainPin.offsetTop;
+  var coordsBlock = {
+    x: mainPin.offsetLeft,
+    y: mainPin.offsetTop
+  };
+  
   /* Узнаём смещение */
-  deltaX = Xblock - axisX;
-  deltaY = Yblock - axisY;
+  var delta = {
+    x: coordsBlock.x - axis.x,
+    y: coordsBlock.y - axis.y
+  };
+  
   /* Узнаем координаты, показанные концом метки*/
-  address.value = 'x: ' + Math.floor(Xblock + SIZE_MAIN_PIN_WIDTH / 2) + ' y: ' + Math.floor(Yblock + SIZE_MAIN_PIN_HEIGHT - SIZE_MAIN_SKY);
+  address.value = 'x: ' + Math.floor(coordsBlock.x + SIZE_MAIN_PIN_WIDTH / 2) + ' y: ' + Math.floor(coordsBlock.y + SIZE_MAIN_PIN_HEIGHT - SIZE_MAIN_SKY);
 
   document.onmousemove = function (e) {
     /* Получаем новые координаты курсора мыши */
-    var x = e.pageX;
-    var y = e.pageY;
+    var endAxis = {
+      x: e.clientX,
+      y: e.clientY
+    };
+    
 
     /* Вычисляем новые координаты блока */
-    var newX = deltaX + x;
-    var newY = deltaY + y;
+    var newCoordsBlock = {
+      x: delta.x + endAxis.x,
+      y: delta.y + endAxis.y
+    };
+      
     /* Ставим условия выхода за рамки метки*/
-    if (newX < -33) {
-      newX = -33;
-    } else if (newX > 1167) {
-      newX = 1167;
+    if (newCoordsBlock.x < -33) {
+      newCoordsBlock.x = -33;
+      document.onmousemove = null;
+    } else if (newCoordsBlock.x > 1167) {
+      newCoordsBlock.x = 1167;
+      document.onmousemove = null;
     }
-    if (newY < 112) {
-      newY = 112;
-    } else if (newY > 612) {
-      newY = 612;
+
+    if (newCoordsBlock.y < 112) {
+      newCoordsBlock.y = 112;
+      document.onmousemove = null;
+    } else if (newCoordsBlock.y > 612) {
+      newCoordsBlock.y = 612;
+      document.onmousemove = null;
     }
-    mainPin.style.top = newY + 'px';
-    mainPin.style.left = newX + 'px';
-    address.value = 'x: ' + Math.floor(newX + SIZE_MAIN_PIN_WIDTH / 2) + ' y: ' + Math.floor(newY + SIZE_MAIN_PIN_HEIGHT - SIZE_MAIN_SKY);
+    mainPin.style.top = newCoordsBlock.y + 'px';
+    mainPin.style.left = newCoordsBlock.x + 'px';
+    address.value = 'x: ' + Math.floor(newCoordsBlock.x + SIZE_MAIN_PIN_WIDTH / 2) + ' y: ' + Math.floor(newCoordsBlock.y + SIZE_MAIN_PIN_HEIGHT - SIZE_MAIN_SKY);
+  };
+
+  document.onmouseup = function () {
+    document.onmousemove = null; // При отпускании мыши убираем обработку события движения мыши
+    document.onmouseup = null;
   };
 };
 
-mainPin.onmouseup = function () {
-  document.onmousemove = false; // При отпускании мыши убираем обработку события движения мыши
-};
+
 
 /* Закрываем попап с информацией */
 cardClose.onclick = function () {

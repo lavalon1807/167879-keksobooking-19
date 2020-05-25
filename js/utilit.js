@@ -1,7 +1,5 @@
 'use strict';
 window.utilit = (function () {
-  // var ESC_KEY = 'Escape';
-  // var ENTER_KEY = 'Enter';
   /* генерирует случайное число */
   return {
     isEscEvent: function (evt, action) {

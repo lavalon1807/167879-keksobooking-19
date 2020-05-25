@@ -15,8 +15,7 @@
 
   /* Ставим обработчики событий на нажатие и отпускание клавиши мыши */
   mainPin.onclick = function () {
-    window.addPins();
-    window.genCards();
+    window.loadPins(window.successPinsLoad);
     this.onclick = false;
   };
 

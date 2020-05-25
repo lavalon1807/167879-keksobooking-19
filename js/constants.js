@@ -51,18 +51,6 @@
     CHECKINS: ['13:00', '15:00', '17:00', '18:00', '24:00', '22:00', '21:00', '10:00'],
     CHECKOUTS: ['12:00', '13:00', '14:00', '15:00', '16:00', '18:00', '11:00', '9:00'],
 
-    FEATURES:[
-      ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'],
-      ['wifi', 'dishwasher', 'parking', 'washer', 'elevator'],
-      ['wifi', 'dishwasher', 'parking', 'washer'],
-      ['wifi', 'dishwasher', 'parking'],
-      ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'],
-      ['wifi', 'dishwasher', 'parking', 'washer', 'elevator'],
-      ['wifi', 'dishwasher', 'parking', 'washer'],
-      ['wifi', 'dishwasher', 'parking', 'washer', 'elevator'],
-    ],
-
-
     MINPRICE: ['0', '1000', '5000', '10000'],
 
     PIN_X: [1100, 945, 101, 40, 301, 454, 666, 784],

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html lang="ru">
 <head>
   <meta charset="utf-8">
@@ -64,7 +64,7 @@
             <option value="1">Один гость</option>
             <option value="0">Не для гостей</option>
           </select>
-          <fieldset id="housing-features" class="map__features">
+          <fieldset name="housing-features" id="housing-features" class="map__features map__filter">
             <input type="checkbox" name="features" value="wifi" id="filter-wifi" class="map__checkbox visually-hidden">
             <label class="map__feature map__feature--wifi" for="filter-wifi">Wi-Fi</label>
             <input type="checkbox" name="features" value="dishwasher" id="filter-dishwasher" class="map__checkbox visually-hidden">
@@ -257,5 +257,7 @@
   <script src="js/utilit.js"></script>
   <script src="js/form.js"></script>
   <script src="js/filter.js"></script>
+  <script src="js/unload.js"></script>>
+  <script src="js/server.js"></script>
 </body>
 </html>

@@ -7,12 +7,12 @@
 
   /* делаем для всех полей ввода атрибут disabled*/
   var formFields = document.querySelectorAll('fieldset');
-  var addBlock = function () {
+  window.addBlock = function () {
     for (var i = 0; i < formFields.length; i++) {
       formFields[i].setAttribute('disabled', 'true');
     }
   };
-  addBlock();
+  window.addBlock();
 
 
   window.removeBlock = function () {
@@ -28,10 +28,10 @@
     window.removeBlock();
   };
 
-  var setTouchOption = function () {
+  window.setTouchOption = function () {
     window.element.adForm.classList.add('ad-form--disabled');
     mapFilters.classList.add('map__filters--disabled');
   };
-  setTouchOption();
+  window.setTouchOption();
 
 })();

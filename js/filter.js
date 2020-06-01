@@ -1,5 +1,6 @@
 'use strict';
 (function () {
+
   /* Добавляем обработчик фильтров */
   var allFilters = document.querySelectorAll('.map__filter');
   var mapFeatures = document.querySelector('.map__features');

@@ -9,20 +9,8 @@ var SIZE_MAIN_PIN_WIDTH = 66;
 var SIZE_MAIN_PIN_HEIGHT = 88;
 var SIZE_MAIN_SKY = 70;
 
-// /* генерирует случайное число */
-// var genNumber = function (min, max) {
-//   var rend = Math.floor(Math.random() * (max - min) + min);
-//   return rend;
-// };
-
 /* Добавляем скрытость сайта*/
 active.classList.add('map--faded');
-
-// var removeBlock = function () {
-//   for (var i = 0; i < formFields.length; i++) {
-//     formFields[i].removeAttribute('disabled', 'false');
-//   }
-// };
 
 /* Делаем метку в центре основоположником */
 var mainPin = document.querySelector('.map__pin--main');
@@ -45,11 +33,6 @@ adForm.classList.add('ad-form--disabled');
 var mapFilters = document.querySelector('.map__filters');
 mapFilters.classList.add('map__filters--disabled');
 
-/* Ставим обработчики событий на нажатие и отпускание клавиши мыши */
-// mainPin.onclick = function () {
-//   addPins();
-//   this.onclick = false;
-// };
 /* При нажатии кнопки мыши попадаем в эту функцию */
 mainPin.onmousedown = function (evt) {
   var address = document.querySelector('#address');
@@ -127,14 +110,6 @@ document.onkeydown = function (evt) {
     templeCard.classList.add('hidden');
   }
 };
-
-/* Создаем карточки */
-// var addCards = function () {
-//   var fragment = document.createDocumentFragment();
-//   fragment.appendChild(templeCard);
-//   mapPins.appendChild(fragment);
-// };
-/* Делаем валидацию */
 
 /* Делаем валидацию форм для гостей и комнат*/
 var roomNumber = document.querySelector('#room_number');

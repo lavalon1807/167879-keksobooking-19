@@ -13,9 +13,10 @@
     window.utilit.isEnterEvent(evt, window.hiddenActive());
   });
 
+  var URL = 'https://javascript.pages.academy/keksobooking/data';
   /* Ставим обработчики событий на нажатие и отпускание клавиши мыши */
   mainPin.onclick = function () {
-    window.loadPins(window.successPinsLoad);
+    window.loadPins(URL, window.successPinsLoad);
     this.onclick = false;
   };
 

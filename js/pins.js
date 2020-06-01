@@ -8,7 +8,6 @@
   window.renderPin = function (data) {
     var copyPin = templePin.cloneNode(true);
     copyPin.classList.add('cards');
-    // copyPin.classList.add('card_' + (data.id + 1));
     copyPin.style = 'left: ' + data.location.x + 'px; top: ' + data.location.y + 'px';
     var imgPin = copyPin.querySelector('img');
     imgPin.src = data.author.avatar;
@@ -34,12 +33,6 @@
       fragment.appendChild(window.renderPin(masspins[j]));
     }
     window.element.mapPins.appendChild(fragment);
+    window.genCards(masspins);
   };
-
-  // window.addNewCheckedPins = function (maschecked) {
-  //   for (var j = 0; j < maschecked.length; j++) {
-  //     fragment.appendChild(renderPin(maschecked[j], j));
-  //   }
-  //   window.element.mapPins.appendChild(fragment);
-  // };
 })();

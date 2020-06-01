@@ -25,6 +25,20 @@
     }
   };
 
+  window.hidePins = function () {
+    var allPin = document.querySelectorAll('.cards');
+    for (var p = 0; p < allPin.length; p++) {
+      allPin[p].classList.add('hidden');
+    }
+  };
+
+  window.showPins = function () {
+    var allPin = document.querySelectorAll('.cards');
+    for (var p = 0; p < allPin.length; p++) {
+      allPin[p].classList.remove('hidden');
+    }
+  };
+
   /* показывает метки от фильтра */
   window.addNewPins = function (masspins) {
     var fragment = document.createDocumentFragment();

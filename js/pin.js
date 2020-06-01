@@ -31,6 +31,7 @@
     var address = document.querySelector('#address');
     window.element.adForm.classList.remove('ad-form--disabled');
     window.templeCard.classList.add('hidden');
+    window.showPins();
     /* Получаем текущие координаты курсора */
     var axis = {
       x: evt.clientX,

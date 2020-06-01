@@ -66,16 +66,20 @@
   };
 
   var form = document.querySelector('.ad-form');
+  var mainPin = document.querySelector('.map__pin--main');
+  var mapFilters = document.querySelectorAll('.map__filters');
 
   form.addEventListener('submit', function (evt) {
 
     window.upload(new FormData(form), function () {
-      window.delPins();
+      window.hidePins();
       window.element.active.classList.add('map--faded');
       window.element.adForm.classList.add('ad-form--disabled');
       window.addBlock();
     });
     form.reset();
     evt.preventDefault();
+    mainPin.style.left = '570px';
+    mainPin.style.top = '375px';
   });
 })();

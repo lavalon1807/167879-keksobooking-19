@@ -1,165 +1,177 @@
 'use strict';
-
 var active = document.querySelector('.map');
-active.classList.remove('map--faded');
-
-var mapPins = document.querySelector('.map__pins');
-
-var templePin = document.querySelector('#pin')
-  .content
-  .querySelector('.map__pin');
-
-var picture = templePin.querySelector('img');
-
 var templeCard = document.querySelector('#card')
   .content
   .querySelector('.map__card');
+var cardClose = templeCard.querySelector('.popup__close');
 
-var cardTitle = templeCard.querySelector('.popup__title');
-var cardAvatar = templeCard.querySelector('.popup__avatar');
-var cardAdress = templeCard.querySelector('.popup__text--address');
-var cardPrice = templeCard.querySelector('.popup__text--price');
-var cardType = templeCard.querySelector('.popup__type');
-var cardCapacity = templeCard.querySelector('.popup__text--capacity');
-var cardTime = templeCard.querySelector('.popup__text--time');
-var cardFeatures = templeCard.querySelector('.popup__features');
+var SIZE_MAIN_PIN_WIDTH = 66;
+var SIZE_MAIN_PIN_HEIGHT = 88;
+var SIZE_MAIN_SKY = 70;
 
-var PIN_MIN_X = 30;
-var PIN_MAX_X = 1100;
-var PIN_MIN_Y = 130;
-var PIN_MAX_Y = 630;
+/* Добавляем скрытость сайта*/
+active.classList.add('map--faded');
 
-var TITLES = [
-  'Уютное гнездышко для молодоженов',
-  'Старая хибара',
-  'Пентхаус',
-  'Клетка для голубей',
-  'Жилье без регистрации и СМС',
-  'Сдаю балкон',
-  'Комната для интроверта',
-  'Юрта для эскимоса'
-];
+/* Делаем метку в центре основоположником */
+var mainPin = document.querySelector('.map__pin--main');
 
-var ADDRESSES = [
-  '102-0082 Tōkyō-to, Chiyoda-ku, Ichibanchō, 14−3',
-  '102-0082 Tōkyō-to, Chiyoda-ku, Karucha, 15−3',
-  '102-0082 Tōkyō-to, Chiyoda-ku, Pinocio, 16−3',
-  '102-0082 Tōkyō-to, Chiyoda-ku, Griodlava, 17−3',
-  '102-0082 Tōkyō-to, Chiyoda-ku, Soliusha, 18−3',
-  '102-0082 Tōkyō-to, Chiyoda-ku, Baara, 19−3',
-  '102-0082 Tōkyō-to, Chiyoda-ku, Uruiochio, 1−3',
-  '102-0082 Tōkyō-to, Chiyoda-ku, Iclala, 10−3'
-];
+mainPin.addEventListener('mousedown', function (evt) {
+  if (evt.button === 0) {
+    active.classList.remove('map--faded');
+  }
+});
 
-var PRICE = [
-  '1200',
-  '2200',
-  '3200',
-  '4200',
-  '5200',
-  '6200',
-  '7200',
-  '8200'
-];
+mainPin.addEventListener('keydown', function (evt) {
+  if (evt.key === 'Enter') {
+    active.classList.remove('map--faded');
+    adForm.classList.remove('ad-form--disabled');
+  }
+});
 
-var anObj = {
-  flat: 'Квартира',
-  bungalo: 'Бунгало',
-  house: 'Дом',
-  palace: 'Дворец'
-};
+var adForm = document.querySelector('.ad-form');
+adForm.classList.add('ad-form--disabled');
+var mapFilters = document.querySelector('.map__filters');
+mapFilters.classList.add('map__filters--disabled');
 
-var room = [1, 2, 3, 4, 5, 6, 20, 50];
-var guest = [1, 2, 3, 4, 5, 6, 30, 100];
+/* При нажатии кнопки мыши попадаем в эту функцию */
+mainPin.onmousedown = function (evt) {
+  var address = document.querySelector('#address');
+  adForm.classList.remove('ad-form--disabled');
+  templeCard.classList.add('hidden');
+  /* Получаем текущие координаты курсора */
+  var axis = {
+    x: evt.clientX,
+    y: evt.clientY
+  };
 
-var checkins = ['13:00', '15:00', '17:00', '18:00', '24:00', '22:00', '21:00', '10:00'];
-var checkouts = ['12:00', '13:00', '14:00', '15:00', '16:00', '18:00', '11:00', '9:00'];
+  // Узнаём текущие координаты блока
+  var coordsBlock = {
+    x: mainPin.offsetLeft,
+    y: mainPin.offsetTop
+  };
 
-var features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner', 'wifi', 'dishwasher'];
+  /* Узнаём смещение */
+  var delta = {
+    x: coordsBlock.x - axis.x,
+    y: coordsBlock.y - axis.y
+  };
 
-/* генерирует случайное число */
-var genNumber = function (min, max) {
-  var rend = Math.floor(Math.random() * (max - min) + min);
-  return rend;
-};
+  /* Узнаем координаты, показанные концом метки*/
+  address.value = 'x: ' + Math.floor(coordsBlock.x + SIZE_MAIN_PIN_WIDTH / 2) + ' y: ' + Math.floor(coordsBlock.y + SIZE_MAIN_PIN_HEIGHT - SIZE_MAIN_SKY);
 
-var genKey = function (arr) {
-  var arr2 = Object.keys(arr);/* возвращаем массив из собственных свойств */
-  var rands = genNumber(0, arr2.length - 1);/* создаем рандом из массива выше */
-  var key = arr2[rands]; /* записываем в переменную рандомный элемент массива */
-  return key;
-};
-
-/* создание массива объектов случайных данных */
-var patronPin = [];
-var genPin = function () {
-  var keys = genKey(anObj); /* вызываем функцию с рандомным элементом из массива и сохраняем в переменную*/
-  for (var i = 0; i < 8; i++) {
-    var objPin = {
-      author: {
-        avatar: 'img/avatars/user0' + (i + 1) + '.png'
-      },
-      offer: {
-        title: TITLES[i],
-        address: ADDRESSES[i],
-        price: PRICE[i],
-        type: anObj[keys], /* сохраняем в массив из объекта рандом из ключей*/
-        rooms: room[i],
-        guest: guest[i],
-        checkin: checkins[i],
-        checkout: checkouts[i],
-        feature: features[i],
-      }
+  document.onmousemove = function (e) {
+    /* Получаем новые координаты курсора мыши */
+    var endAxis = {
+      x: e.clientX,
+      y: e.clientY
     };
-    patronPin.push(objPin);
 
+
+    /* Вычисляем новые координаты блока */
+    var newCoordsBlock = {
+      x: delta.x + endAxis.x,
+      y: delta.y + endAxis.y
+    };
+
+    /* Ставим условия выхода за рамки метки*/
+    if (newCoordsBlock.x < -33) {
+      newCoordsBlock.x = -33;
+      document.onmousemove = null;
+    } else if (newCoordsBlock.x > 1167) {
+      newCoordsBlock.x = 1167;
+      document.onmousemove = null;
+    }
+
+    if (newCoordsBlock.y < 112) {
+      newCoordsBlock.y = 112;
+      document.onmousemove = null;
+    } else if (newCoordsBlock.y > 612) {
+      newCoordsBlock.y = 612;
+      document.onmousemove = null;
+    }
+    mainPin.style.top = newCoordsBlock.y + 'px';
+    mainPin.style.left = newCoordsBlock.x + 'px';
+    address.value = 'x: ' + Math.floor(newCoordsBlock.x + SIZE_MAIN_PIN_WIDTH / 2) + ' y: ' + Math.floor(newCoordsBlock.y + SIZE_MAIN_PIN_HEIGHT - SIZE_MAIN_SKY);
+  };
+
+  document.onmouseup = function () {
+    document.onmousemove = null; // При отпускании мыши убираем обработку события движения мыши
+    document.onmouseup = null;
+  };
+};
+
+/* Закрываем попап с информацией */
+cardClose.onclick = function () {
+  templeCard.classList.add('hidden');
+};
+
+document.onkeydown = function (evt) {
+  if (evt.keyCode === 27) {
+    templeCard.classList.add('hidden');
   }
-  return patronPin;
 };
 
-var pins = genPin();
+/* Делаем валидацию форм для гостей и комнат*/
+var roomNumber = document.querySelector('#room_number');
+var optionRoom = roomNumber.querySelectorAll('option');
+var sleepPlace = document.querySelector('#capacity');
+var optionPlace = sleepPlace.querySelectorAll('option');
+sleepPlace.setAttribute('selected', false);
 
-var genTitle = function () {
-  var random = genNumber(0, 8);
-  var itemFeature = templeCard.querySelector('.popup__feature--' + patronPin[random].offer.feature);
-  cardTitle.innerText = patronPin[random].offer.title;
-  cardAvatar.src = patronPin[random].author.avatar;
-  cardAdress.innerText = patronPin[random].offer.address;
-  cardPrice.innerText = patronPin[random].offer.price + '₽/ночь';
-  cardType.innerText = patronPin[random].offer.type; /* вставляем в разметку рандомный текст*/
-  cardCapacity.innerText = patronPin[random].offer.rooms + ' комнаты для ' + patronPin[random].offer.guest + ' гостей';/* Показывает рандом гостей и комнат*/
-  cardTime.innerText = 'Заезд после ' + patronPin[random].offer.checkin + ' выезд до ' + patronPin[random].offer.checkout;
-  cardFeatures.removeChild(itemFeature);
-};
-
-genTitle();
-
-/* генерация меток */
-var renderPin = function (data) {
-  var copyPin = templePin.cloneNode(true);
-  copyPin.style = 'left: ' + genNumber(PIN_MIN_X, PIN_MAX_X) + 'px; top: ' + genNumber(PIN_MIN_Y, PIN_MAX_Y) + 'px';
-  picture.src = data.author.avatar;
-  picture.alt = data.offer.title;
-
-  return copyPin;
-};
-
-/* показывает метки на карте из фрагментов*/
-var addPins = function () {
-  var fragment = document.createDocumentFragment();
-  for (var j = 0; j < pins.length; j++) {
-    fragment.appendChild(renderPin(pins[j]));
+roomNumber.addEventListener('change', function () {
+  for (var i = 0; i < optionRoom.length; i++) {
+    optionPlace[i].classList.add('hidden');
+    optionPlace[i].classList.add('hidden');
+    if (optionRoom[i].selected === true) {
+      optionPlace[i].classList.remove('hidden');
+      optionPlace[i].setAttribute('selected', true);
+      sleepPlace.value = roomNumber.value;
+    }
   }
-  mapPins.appendChild(fragment);
-};
+});
 
-addPins();
+/* Делаем валидацию на Заголовок объявления */
+var titleForm = adForm.querySelector('#title');
 
-var addCards = function () {
-  var fragment = document.createDocumentFragment();
-  fragment.appendChild(templeCard);
+titleForm.addEventListener('invalid', function () {
+  if (titleForm.validity.tooShort) {
+    titleForm.setCustomValidity('Имя должно состоять минимум из 30-ти символов!');
+  } else if (titleForm.validity.tooLong) {
+    titleForm.setCustomValidity('Имя должно состоять максимум 100 символов!');
+  } else if (titleForm.validity.valueMissing) {
+    titleForm.setCustomValidity('Обязательное поле!');
+  } else {
+    titleForm.setCustomValidity('');
+  }
+});
 
-  mapPins.appendChild(fragment);
-};
+/* Делаем валидацию на цена и место*/
+var priceForm = adForm.querySelector('#price');
+var typeForm = adForm.querySelector('#type');
+var optionType = typeForm.querySelectorAll('option');
+var minPrice = [
+  '0',
+  '1000',
+  '5000',
+  '10000'
+];
 
-addCards();
+typeForm.addEventListener('change', function () {
+  for (var i = 0; i < optionType.length; i++) {
+    if (optionType[i].selected === true) {
+      priceForm.setAttribute('min', minPrice[i]);
+    }
+  }
+});
+
+/* Делаем валидацию заезда и выезда */
+var timeinForm = adForm.querySelector('#timein');
+var timeoutForm = adForm.querySelector('#timeout');
+
+timeinForm.addEventListener('change', function () {
+  timeoutForm.value = timeinForm.value;
+});
+
+timeoutForm.addEventListener('change', function () {
+  timeinForm.value = timeoutForm.value;
+});

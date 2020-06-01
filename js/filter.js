@@ -4,7 +4,6 @@
   var allFilters = document.querySelectorAll('.map__filter');
   var mapFeatures = document.querySelector('.map__features');
   var mapCheckbox = mapFeatures.querySelectorAll('input[type=checkbox]');
-
   var DEBOUNCE_INTERVAL = 400;
 
   var debounce = function (cd) {
@@ -19,6 +18,7 @@
       window.templeCard.classList.add('hidden');
       var masss = massFilter();
       debounce((masss));
+
       window.genCards(masss);
     });
   });
